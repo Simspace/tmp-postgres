@@ -362,8 +362,9 @@ start = startConfig defaultConfig
 --
 --   @since 1.12.0.0
 stop :: DB -> IO ()
-stop DB {..} =
-  Async.concurrently_ (stopPlan dbPostgresProcess) $ cleanupConfig dbResources
+stop DB {..} = do
+  void $ stopPlan dbPostgresProcess
+  cleanupConfig dbResources
 
 -- | Only stop the @postgres@ process but leave any temporary resources.
 --   Useful for testing backup strategies when used in conjunction with
